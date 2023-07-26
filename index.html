@@ -1,33 +1,171 @@
-                    <meta charset="utf-8" emacsmode="-*- markdown -*">
-                            **Starter Document**
+<meta charset="utf-8" emacsmode="-*- markdown -*-"><link rel="stylesheet" href="website.css?">
 
-Welcome to Markdeep. It's the simple way to write plain text with
-_style_. From https://casual-effects.com/markdeep.
+                          **The Psichic CodeX**
 
-Section
-===============================================================================
-
-## How to update a github repo
-
-Quick summary:
-
-Open terminal and enter the folder of the github repository/project you want to update
-
-- Type into terminal: `git add .` and then hit enter
-- Type into terminal `git status` and then hit enter (this step is optional)
-- Type into terminal `git commit -m` ‘type any message here” and then hit enter
-- Type into terminal `git push` and then hit enter
-
-Subsection
--------------------------------------------------------------------------------
+This website contains a sampling of code-snippets for scientific computing in various languages.
 
 
+Features
+==============================================================
+
+What is covered
+
+- Octave
+- Python
+- Python (Scienctific)
+- Wolframscript
+- LaTeX
+- LaTeX (Beamer)
+
+## Python (Core)
+
+## Execfile Substitute
+
+Keep this file in your CWD.
+
+~~~~~~
+import sys
+#pyexec.py
+def execfile(filename, globals=None, locals=None):
+    if globals is None:
+        globals = sys._getframe(1).f_globals
+    if locals is None:
+        locals = sys._getframe(1).f_locals
+    with open(filename, "r") as fh:
+        exec(fh.read()+"\n", globals, locals)
+
+~~~~~~
+
+Test file : Put this code in `testexec.py`, also in your CWD
+
+~~~~~~
+a=2
+b=3
+c=a+b
+print(c)
+
+~~~~~~
+
+The Effect:
+
+~~~~~~
+>>> from pyexec import execfile
+>>> execfile('testexec.py')
+5
+>>> dir()
+['__annotations__', '__builtins__', '__doc__', '__loader__', '__name__', '__package__', '__spec__', 'a', 'b', 'c', 'execfile']
+>>> a
+2
+>>> b
+3
+>>> c
+5
+~~~~~~
+
+Notes:
+
+1. See: [this stackoverflow page](https://stackoverflow.com/questions/436198/what-is-an-alternative-to-execfile-in-python-3)
+2. In Ipython, simply `%run /path/to/filename.py`
+
+Beamer (LaTeX)
+================================================================
+
+## Notes Side by side
+
+~~~~~~
+\documentclass{beamer}
+% % % % % % comment out in presentation % % % % % % %
+\usepackage{pgfpages}
+\setbeamertemplate{note page}[plain]
+\setbeameroption{show notes on second screen=right}
+% % % % % % comment out in presentation % % % % % % %
+\usepackage{graphics}
+\usepackage{amsmath,amsthm}
+\title[NIX]{An Invitation to Linux and Unix Operating Systems}
+\author{Shibaji Banerjee \\ \copyright CopyLeft 2013}
+\institute{St. Xavier's College(Autonomous), Kolkata \\ Department of Physics}
+\date{February 2013}
+
+\begin{document}
+\begin{frame}
+\note{Welcome. The objective of this talk is to get you familiar with Linux, so that you can strike off immediately with your primary objective. However be forewarned that Linux
+have turned into a primary obsession for about 1 per 1000 internet users (Src: Lico, linuxcounter.net) due to its hassle free usability and there are an estimated user base of
+64 L users who do not wish to hold anything back from their peers, true to the spirit of Open Source. Next: A brief historical expose, occupying about two slides.}
+\titlepage
+\end{frame}
+\end{document}
+~~~~~~
+
+![](https://i.imgur.com/AeaJq02.png)
+
+LaTeX (Core)
+==============================================================
+
+## Tagging
+
+Generate Multiple output documents from single LaTeX source like notes, slides, workbook, exams, instructor manual etc.
+Set tagged zones in the source and use one command in the preamble to mark any one or a set of them to be active.
+
+**Preamble**:
+
+- `\usetag{this,that}`
+- `\droptag{this,that} %or inactive`
+
+**Tagging through**:
+- `\tagged{taglist}{text}`
+- `\untagged{taglist}{text}`
+- `\iftagged{taglist}{text}{alt-text}`
+- `\begin \end taggedblock/untaggedblock with taglist arg.`
+
+**Notes**
+
+- Also archived with (1) snipplr.com (bann creds)
+- I was trying to generate alternate outputs from a single markdown source. Checked templating, gawk, sed options. Seemed that the best way to do this is to convert from Markdown to LaTeX at some point and then use one of the
+[Conditional compilation options](https://texfaq.org/FAQ-conditional)
+- [User Manual for Tagged package](https://mirror.niser.ac.in/ctan/macros/latex/contrib/tagging/tagging.pdf)
+
+### MWE
+
+~~~~~~
+\documentclass{article}
+% sampleTagging.tex
+\usepackage{tagging}
+\usetag{author} %can use a list i.e {this,that}
+%\droptag{fancy}
+\begin{document}
+Hey this text is for all.
+\begin{taggedblock}{author}
+This is eyes only for author
+\end{taggedblock}
+\begin{taggedblock}{instructor}
+This is eyes only for instructor
+\end{taggedblock}
+\begin{taggedblock}{student}
+This is eyes only for student
+\end{taggedblock}
+~~~~~~
+
+### Thru "Optional" Package
+
+~~~~~~latex
+%One way to use this package is to declare (for example)
+\usepackage[opta]{optional}
+%at the beginning of your document, and flag optional text throughout your document like:
+\opt{opta}{Do this if option opta was declared}
+\opt{optb}{Do this if option optb was declared}
+\opt{optx,opty}{Do this if either option optx or opty}
+\opt{}{Never print this text!}
+\opt{opta}{\input{appendices}}
+\optv{xam}{Type: \verb|[root /]$ rm -r *|.}
+~~~~~~
+\end{document}
 
 
+About
+==============================================================
+
+The logo-icon in the banner is from [Imgur](https://i.imgur.com/K4upfBe.png). In my systems it resides as `psicon.jpg` <small> check the accompanying css file </small>
 
 
-
-
-
-<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js?" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
-
+<style class="fallback">body{visibility:hidden}</style><script>markdeepOptions={tocStyle:'long'};</script>
+<!-- Markdeep: --><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?" charset="utf-8"></script>
