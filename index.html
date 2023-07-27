@@ -144,6 +144,7 @@ This is eyes only for instructor
 \begin{taggedblock}{student}
 This is eyes only for student
 \end{taggedblock}
+\end{document}
 ~~~~~~
 
 ### Thru "Optional" Package
@@ -159,8 +160,220 @@ This is eyes only for student
 \opt{opta}{\input{appendices}}
 \optv{xam}{Type: \verb|[root /]$ rm -r *|.}
 ~~~~~~
-\end{document}
 
+Automation
+==============================================================
+
+## Backup
+
+```
+@echo off
+setlocal
+SET AREYOUSURE=N
+SET TGT=H:\SPACE\Backup
+echo Did you update the 0Backups.txt file?
+echo Have you Backed up Beeftext/KeepNote (ShibNB) from inside?)
+echo Did you export KeepNote (ShibNB) to WSShibNB?
+Echo Do you have the thumbdrive ready in H drive?
+:PROMPT
+SET /P AREYOUSURE=Are you sure (Y/[N])?
+IF /I "%AREYOUSURE%" NEQ "Y" GOTO END
+REM REST OF THE SCRIPT
+ECHO DELETING STALE FILES..........................................
+IF EXIST del orpheus.zip
+IF EXIST del WSShibNB.zip
+IF EXIST del zbook.zip
+ECHO DONE..........................................................
+ECHO ZIPPING Orpheus Zbook and WSShibNB ...
+7za a orpheus.zip "G:\My Drive\Notes\Notable\Orpheus"
+7za a zbook.zip E:\007\USB\ZBook
+7za a WSShibNB.zip WSShibNB
+RD /S/Q WSShibNB
+ECHO DONE.........................................................
+ECHO Copying Files to %TGT% ......................................
+copy /Y 0backups.txt %TGT%
+copy /Y Beeftext.btbackup_2023-06-24.btbackup %TGT%
+copy /Y orpheus.zip %TGT%
+copy /Y ShibNB.tar.gz %TGT%
+copy /Y WSShibNB.zip %TGT%
+copy /Y zbook.zip %TGT%
+ECHO DONE.........................................................
+
+:END
+endlocal
+```
+
+Markdown
+==============================================================
+
+## Include LaTeX
+
+
+
+**md2pdf.cmd**
+
+```
+REM s for standalone (with LaTeX Headers, else a fragment) -i for incremental slides
+pandoc -s -i Hello.md -o Hello.pdf
+```
+
+**md2tex.cmd**
+
+```
+REM REM s for standalone (with LaTeX Headers, else a fragment) -i for incremental slides
+pandoc -s -i Hello.md -o Hello.tex
+```
+
+**Hello.md**
+
+```markdown
+---
+title: Just say hello!
+author: My Friend
+header-includes: |
+    \usepackage{tikz,pgfplots}
+    \usepackage{fancyhdr}
+    \pagestyle{fancy}
+    \fancyhead[CO,CE]{This is fancy}
+    \fancyfoot[CO,CE]{So is this}
+    \fancyfoot[LE,RO]{\thepage}
+abstract: This is a pandoc test with Markdown + inline LaTeX
+---
+
+Just say hello!
+===============
+
+This could be a good example or inlined \LaTeX:
+
+\begin{tikzpicture}
+\begin{axis}
+\addplot[color=red]{exp(x)};
+\end{axis}
+\end{tikzpicture}
+%Here ends the furst plot
+\hskip 5pt
+%Here begins the 3d plot
+\begin{tikzpicture}
+\begin{axis}
+\addplot3[
+    surf,
+]
+{exp(-x^2-y^2)*x};
+\end{axis}
+\end{tikzpicture}
+
+And now, just a few words to terminate:
+
+> Goodbye folks!
+```
+
+**Converted File**
+
+```tex
+% Options for packages loaded elsewhere
+% Converted file (psi)
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{tikz,pgfplots}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead[CO,CE]{This is fancy}
+\fancyfoot[CO,CE]{So is this}
+\fancyfoot[LE,RO]{\thepage}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Just say hello!},
+  pdfauthor={My Friend},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Just say hello!}
+\author{My Friend}
+\date{}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+This is a pandoc test with Markdown + inline LaTeX
+\end{abstract}
+
+\hypertarget{just-say-hello}{%
+\section{Just say hello!}\label{just-say-hello}}
+
+This could be a good example or inlined \LaTeX:
+
+\begin{tikzpicture}
+\begin{axis}
+\addplot[color=red]{exp(x)};
+\end{axis}
+\end{tikzpicture}
+
+\%Here ends the furst plot \hskip 5pt \%Here begins the 3d plot
+
+\begin{tikzpicture}
+\begin{axis}
+\addplot3[
+    surf,
+]
+{exp(-x^2-y^2)*x};
+\end{axis}
+\end{tikzpicture}
+
+And now, just a few words to terminate:
+
+\begin{quote}
+Goodbye folks!
+\end{quote}
+
+\end{document}
+```
+
+**Refs**
+
+- https://pandoc.org/extras.html
+- https://pandoc.org/MANUAL.html
+- https://github.com/Wandmalfarbe/pandoc-latex-template
 
 About
 ==============================================================
